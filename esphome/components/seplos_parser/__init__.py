@@ -2,6 +2,7 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import uart
 from esphome.const import CONF_ID
+import re
 
 DEPENDENCIES = ["uart"]
 
@@ -15,13 +16,26 @@ seplos_parser_ns = cg.esphome_ns.namespace("seplos_parser")
 
 SeplosParser = seplos_parser_ns.class_("SeplosParser", cg.Component)
 
+SENSOR_ID_PATTERN = re.compile(r"^bms(?P<bms_index>\d+)_(?P<metric>[a-zA-Z0-9_]+)$")
+
+
+def parse_sensor_id(config):
+    yaml_id = config[CONF_ID].id
+    match = SENSOR_ID_PATTERN.fullmatch(yaml_id)
+
+    if match is None:
+        raise cv.Invalid(
+            f"id must use the format bms<N>_<metric>, for example bms0_pack_voltage: {yaml_id}"
+        )
+    return int(match["bms_index"]), match["metric"]
+
 HUB_CHILD_SCHEMA = cv.Schema(
     {
         cv.GenerateID(CONF_SEPLOS_PARSER_ID): cv.use_id(SeplosParser),
     }
 )
 
-CONFIG_SCHEMA = ( 
+CONFIG_SCHEMA = (
     cv.Schema({
         cv.GenerateID(): cv.declare_id(SeplosParser),
         cv.Optional(CONF_UPDATE_INTERVAL, default=5): cv.int_,

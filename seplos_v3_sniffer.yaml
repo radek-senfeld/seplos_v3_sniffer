@@ -1,18 +1,24 @@
 substitutions:
   name: seplos-bms
-  battery_bank0: "bms0"
-  battery_bank1: "bms1"
-  device_description: "Monitor and control multiple Seplos V3 BMS via RS485 (Modbus)"
+  pack0: "bms0"
+  pack0_name: "BMS 1"
+  pack1: "bms1"
+  pack1_name: "BMS 2"
+  pack2: "bms2"
+  pack2_name: "BMS 3"
+  pack3: "bms3"
+  pack3_name: "BMS 4"
+  device_description: "Monitor multiple Seplos V3 BMSes via RS-485"
   time: "3" # update interval for all data points
- 
+
 esphome:
   name: ${name}
-  comment: ${device_description} 
+  comment: ${device_description}
 
 external_components:
   - source:
       type: git
-      url: https://github.com/chautruongthinh/seplos_v3_sniffer
+      url: https://github.com/radek-senfeld/seplos_v3_sniffer
 
 esp8266:
   board: nodemcuv2
@@ -29,7 +35,7 @@ logger:
   baud_rate: 0
 
 api:
-  
+
 uart:
 - id: seplos
   tx_pin: GPIO4
@@ -43,596 +49,1059 @@ seplos_parser:
   uart_id: seplos
 
 sensor:
- # bms0
+  # bms0
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} pack_voltage
-    id: bms0_pack_voltage
+    id: ${pack0}_pack_voltage
+    name: ${pack0_name} Pack Voltage
     unit_of_measurement: "V"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} current
-    id: bms0_current
+    id: ${pack0}_current
+    name: ${pack0_name} Current
     unit_of_measurement: "A"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} remaining_capacity
+    id: ${pack0}_remaining_capacity
+    name: ${pack0_name} Remaining Capacity
     unit_of_measurement: "Ah"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} total_capacity
+    id: ${pack0}_total_capacity
+    name: ${pack0_name} Total Capacity
     unit_of_measurement: "Ah"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} total_discharge_capacity
+    id: ${pack0}_total_discharge_capacity
+    name: ${pack0_name} Total Discharge Capacity
     unit_of_measurement: "Ah"
     accuracy_decimals: 0
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} soc
+    id: ${pack0}_soc
+    name: ${pack0_name} State of Charge
     unit_of_measurement: "%"
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} soh
+    id: ${pack0}_soh
+    name: ${pack0_name} State of Health
     unit_of_measurement: "%"
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cycle_count
+    id: ${pack0}_cycle_count
+    name: ${pack0_name} Cycle Count
     unit_of_measurement: "cycles"
     accuracy_decimals: 0
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} average_cell_voltage
+    id: ${pack0}_average_cell_voltage
+    name: ${pack0_name} Average Cell Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} average_cell_temp
+    id: ${pack0}_average_cell_temp
+    name: ${pack0_name} Average Cell Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} max_cell_voltage
+    id: ${pack0}_max_cell_voltage
+    name: ${pack0_name} Maximum Cell Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} min_cell_voltage
+    id: ${pack0}_min_cell_voltage
+    name: ${pack0_name} Minimum Cell Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
         - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} delta_cell_voltage
+    id: ${pack0}_delta_cell_voltage
+    name: ${pack0_name} Cell Voltage Difference
     unit_of_measurement: mV
     accuracy_decimals: 0
     filters:
         - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} max_cell_temp
+    id: ${pack0}_max_cell_temp
+    name: ${pack0_name} Maximum Cell Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} min_cell_temp
+    id: ${pack0}_min_cell_temp
+    name: ${pack0_name} Minimum Cell Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} maxdiscurt
+    id: ${pack0}_maxdiscurt
+    name: ${pack0_name} Maximum Discharge Current
     unit_of_measurement: A
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} maxchgcurt
+    id: ${pack0}_maxchgcurt
+    name: ${pack0_name} Maximum Charge Current
     unit_of_measurement: A
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_1
+    id: ${pack0}_cell_1
+    name: ${pack0_name} Cell 1 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_2
+    id: ${pack0}_cell_2
+    name: ${pack0_name} Cell 2 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_3
+    id: ${pack0}_cell_3
+    name: ${pack0_name} Cell 3 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_4
+    id: ${pack0}_cell_4
+    name: ${pack0_name} Cell 4 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_5
+    id: ${pack0}_cell_5
+    name: ${pack0_name} Cell 5 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_5
+    id: ${pack0}_cell_6
+    name: ${pack0_name} Cell 6 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_6
+    id: ${pack0}_cell_7
+    name: ${pack0_name} Cell 7 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_7
+    id: ${pack0}_cell_8
+    name: ${pack0_name} Cell 8 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_8
+    id: ${pack0}_cell_9
+    name: ${pack0_name} Cell 9 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_9
+    id: ${pack0}_cell_10
+    name: ${pack0_name} Cell 10 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_10
+    id: ${pack0}_cell_11
+    name: ${pack0_name} Cell 11 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_11
+    id: ${pack0}_cell_12
+    name: ${pack0_name} Cell 12 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_12
+    id: ${pack0}_cell_13
+    name: ${pack0_name} Cell 13 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_13
+    id: ${pack0}_cell_14
+    name: ${pack0_name} Cell 14 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_14
+    id: ${pack0}_cell_15
+    name: ${pack0_name} Cell 15 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_15
+    id: ${pack0}_cell_16
+    name: ${pack0_name} Cell 16 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_16
-    unit_of_measurement: V
-    accuracy_decimals: 3
-    filters:
-      - throttle: ${time}s
-  - platform: seplos_parser
-    seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_temp_1
+    id: ${pack0}_cell_temp_1
+    name: ${pack0_name} Cell Temperature 1
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_temp_2
+    id: ${pack0}_cell_temp_2
+    name: ${pack0_name} Cell Temperature 2
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_temp_3
+    id: ${pack0}_cell_temp_3
+    name: ${pack0_name} Cell Temperature 3
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} cell_temp_4
+    id: ${pack0}_cell_temp_4
+    name: ${pack0_name} Cell Temperature 4
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} case_temp
+    id: ${pack0}_case_temp
+    name: ${pack0_name} Case Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} power_temp
+    id: ${pack0}_power_temp
+    name: ${pack0_name} Power Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} power
+    id: ${pack0}_power
+    name: ${pack0_name} Power
     unit_of_measurement: "W"
     accuracy_decimals: 0
     filters:
       - throttle: ${time}s
 
- # bms1
+  # bms1
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} pack_voltage
-    id: bms1_pack_voltage
+    id: ${pack1}_pack_voltage
+    name: ${pack1_name} Pack Voltage
     unit_of_measurement: "V"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} current
-    id: bms1_current
+    id: ${pack1}_current
+    name: ${pack1_name} Current
     unit_of_measurement: "A"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} remaining_capacity
+    id: ${pack1}_remaining_capacity
+    name: ${pack1_name} Remaining Capacity
     unit_of_measurement: "Ah"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} total_capacity
+    id: ${pack1}_total_capacity
+    name: ${pack1_name} Total Capacity
     unit_of_measurement: "Ah"
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} total_discharge_capacity
+    id: ${pack1}_total_discharge_capacity
+    name: ${pack1_name} Total Discharge Capacity
     unit_of_measurement: "Ah"
     accuracy_decimals: 0
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} soc
+    id: ${pack1}_soc
+    name: ${pack1_name} State of Charge
     unit_of_measurement: "%"
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} soh
+    id: ${pack1}_soh
+    name: ${pack1_name} State of Health
     unit_of_measurement: "%"
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cycle_count
+    id: ${pack1}_cycle_count
+    name: ${pack1_name} Cycle Count
     unit_of_measurement: "cycles"
     accuracy_decimals: 0
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} average_cell_voltage
+    id: ${pack1}_average_cell_voltage
+    name: ${pack1_name} Average Cell Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} average_cell_temp
+    id: ${pack1}_average_cell_temp
+    name: ${pack1_name} Average Cell Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} max_cell_voltage
+    id: ${pack1}_max_cell_voltage
+    name: ${pack1_name} Maximum Cell Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} min_cell_voltage
+    id: ${pack1}_min_cell_voltage
+    name: ${pack1_name} Minimum Cell Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
-        - throttle: ${time}s
+      - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} delta_cell_voltage
+    id: ${pack1}_delta_cell_voltage
+    name: ${pack1_name} Cell Voltage Difference
     unit_of_measurement: mV
     accuracy_decimals: 0
     filters:
-        - throttle: ${time}s
+      - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} max_cell_temp
+    id: ${pack1}_max_cell_temp
+    name: ${pack1_name} Maximum Cell Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} min_cell_temp
+    id: ${pack1}_min_cell_temp
+    name: ${pack1_name} Minimum Cell Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} maxdiscurt
+    id: ${pack1}_maxdiscurt
+    name: ${pack1_name} Maximum Discharge Current
     unit_of_measurement: A
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} maxchgcurt
+    id: ${pack1}_maxchgcurt
+    name: ${pack1_name} Maximum Charge Current
     unit_of_measurement: A
     accuracy_decimals: 2
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_1
+    id: ${pack1}_cell_1
+    name: ${pack1_name} Cell 1 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_2
+    id: ${pack1}_cell_2
+    name: ${pack1_name} Cell 2 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_3
+    id: ${pack1}_cell_3
+    name: ${pack1_name} Cell 3 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_4
+    id: ${pack1}_cell_4
+    name: ${pack1_name} Cell 4 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_5
+    id: ${pack1}_cell_5
+    name: ${pack1_name} Cell 5 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_5
+    id: ${pack1}_cell_6
+    name: ${pack1_name} Cell 6 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_6
+    id: ${pack1}_cell_7
+    name: ${pack1_name} Cell 7 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_7
+    id: ${pack1}_cell_8
+    name: ${pack1_name} Cell 8 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_8
+    id: ${pack1}_cell_9
+    name: ${pack1_name} Cell 9 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_9
+    id: ${pack1}_cell_10
+    name: ${pack1_name} Cell 10 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_10
+    id: ${pack1}_cell_11
+    name: ${pack1_name} Cell 11 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_11
+    id: ${pack1}_cell_12
+    name: ${pack1_name} Cell 12 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_12
+    id: ${pack1}_cell_13
+    name: ${pack1_name} Cell 13 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_13
+    id: ${pack1}_cell_14
+    name: ${pack1_name} Cell 14 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_14
+    id: ${pack1}_cell_15
+    name: ${pack1_name} Cell 15 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_15
+    id: ${pack1}_cell_16
+    name: ${pack1_name} Cell 16 Voltage
     unit_of_measurement: V
     accuracy_decimals: 3
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_16
-    unit_of_measurement: V
-    accuracy_decimals: 3
-    filters:
-      - throttle: ${time}s
-  - platform: seplos_parser
-    seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_temp_1
+    id: ${pack1}_cell_temp_1
+    name: ${pack1_name} Cell Temperature 1
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_temp_2
+    id: ${pack1}_cell_temp_2
+    name: ${pack1_name} Cell Temperature 2
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_temp_3
+    id: ${pack1}_cell_temp_3
+    name: ${pack1_name} Cell Temperature 3
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} cell_temp_4
+    id: ${pack1}_cell_temp_4
+    name: ${pack1_name} Cell Temperature 4
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} case_temp
+    id: ${pack1}_case_temp
+    name: ${pack1_name} Case Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} power_temp
+    id: ${pack1}_power_temp
+    name: ${pack1_name} Power Temperature
     unit_of_measurement: °C
     accuracy_decimals: 1
     filters:
       - throttle: ${time}s
-
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} power
+    id: ${pack1}_power
+    name: ${pack1_name} Power
     unit_of_measurement: "W"
     accuracy_decimals: 0
     filters:
-      - throttle: ${time}s 
+      - throttle: ${time}s
+
+  # bms2
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_pack_voltage
+    name: ${pack2_name} Pack Voltage
+    unit_of_measurement: "V"
+    accuracy_decimals: 2
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_current
+    name: ${pack2_name} Current
+    unit_of_measurement: "A"
+    accuracy_decimals: 2
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_remaining_capacity
+    name: ${pack2_name} Remaining Capacity
+    unit_of_measurement: "Ah"
+    accuracy_decimals: 2
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_total_capacity
+    name: ${pack2_name} Total Capacity
+    unit_of_measurement: "Ah"
+    accuracy_decimals: 2
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_total_discharge_capacity
+    name: ${pack2_name} Total Discharge Capacity
+    unit_of_measurement: "Ah"
+    accuracy_decimals: 0
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_soc
+    name: ${pack2_name} State of Charge
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_soh
+    name: ${pack2_name} State of Health
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cycle_count
+    name: ${pack2_name} Cycle Count
+    unit_of_measurement: "cycles"
+    accuracy_decimals: 0
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_average_cell_voltage
+    name: ${pack2_name} Average Cell Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_average_cell_temp
+    name: ${pack2_name} Average Cell Temperature
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_max_cell_voltage
+    name: ${pack2_name} Maximum Cell Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_min_cell_voltage
+    name: ${pack2_name} Minimum Cell Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_delta_cell_voltage
+    name: ${pack2_name} Cell Voltage Difference
+    unit_of_measurement: mV
+    accuracy_decimals: 0
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_max_cell_temp
+    name: ${pack2_name} Maximum Cell Temperature
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_min_cell_temp
+    name: ${pack2_name} Minimum Cell Temperature
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_maxdiscurt
+    name: ${pack2_name} Maximum Discharge Current
+    unit_of_measurement: A
+    accuracy_decimals: 2
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_maxchgcurt
+    name: ${pack2_name} Maximum Charge Current
+    unit_of_measurement: A
+    accuracy_decimals: 2
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_1
+    name: ${pack2_name} Cell 1 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_2
+    name: ${pack2_name} Cell 2 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_3
+    name: ${pack2_name} Cell 3 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_4
+    name: ${pack2_name} Cell 4 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_5
+    name: ${pack2_name} Cell 5 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_6
+    name: ${pack2_name} Cell 6 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_7
+    name: ${pack2_name} Cell 7 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_8
+    name: ${pack2_name} Cell 8 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_9
+    name: ${pack2_name} Cell 9 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_10
+    name: ${pack2_name} Cell 10 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_11
+    name: ${pack2_name} Cell 11 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_12
+    name: ${pack2_name} Cell 12 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_13
+    name: ${pack2_name} Cell 13 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_14
+    name: ${pack2_name} Cell 14 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_15
+    name: ${pack2_name} Cell 15 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_16
+    name: ${pack2_name} Cell 16 Voltage
+    unit_of_measurement: V
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_temp_1
+    name: ${pack2_name} Cell Temperature 1
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_temp_2
+    name: ${pack2_name} Cell Temperature 2
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_temp_3
+    name: ${pack2_name} Cell Temperature 3
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_temp_4
+    name: ${pack2_name} Cell Temperature 4
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_case_temp
+    name: ${pack2_name} Case Temperature
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_power_temp
+    name: ${pack2_name} Power Temperature
+    unit_of_measurement: °C
+    accuracy_decimals: 1
+    filters:
+      - throttle: ${time}s
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_power
+    name: ${pack2_name} Power
+    unit_of_measurement: "W"
+    accuracy_decimals: 0
+    filters:
+      - throttle: ${time}s
 
 text_sensor:
- # bms0
+  # bms0
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank0} system_status
+    id: ${pack0}_system_status
+    name: ${pack0_name} System Status
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack0}_active_balancing_cells
+    name: ${pack0_name} Active Balancing Cells
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack0}_cell_temperature_alarms
+    name: ${pack0_name} Cell Temperature Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack0}_cell_voltage_alarms
+    name: ${pack0_name} Cell Voltage Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack0}_FET_status
+    name: ${pack0_name} FET Status
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack0}_active_alarms
+    name: ${pack0_name} Active Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack0}_active_protections
+    name: ${pack0_name} Active Protections
 
- # bms1
+  # bms1
   - platform: seplos_parser
     seplos_parser_id: seplos_v3
-    name: ${battery_bank1} system_status
+    id: ${pack1}_system_status
+    name: ${pack1_name} System Status
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack1}_active_balancing_cells
+    name: ${pack1_name} Active Balancing Cells
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack1}_cell_temperature_alarms
+    name: ${pack1_name} Cell Temperature Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack1}_cell_voltage_alarms
+    name: ${pack1_name} Cell Voltage Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack1}_FET_status
+    name: ${pack1_name} FET Status
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack1}_active_alarms
+    name: ${pack1_name} Active Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack1}_active_protections
+    name: ${pack1_name} Active Protections
+
+  # bms2
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_system_status
+    name: ${pack2_name} System Status
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_active_balancing_cells
+    name: ${pack2_name} Active Balancing Cells
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_temperature_alarms
+    name: ${pack2_name} Cell Temperature Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_cell_voltage_alarms
+    name: ${pack2_name} Cell Voltage Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_FET_status
+    name: ${pack2_name} FET Status
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_active_alarms
+    name: ${pack2_name} Active Alarms
+  - platform: seplos_parser
+    seplos_parser_id: seplos_v3
+    id: ${pack2}_active_protections
+    name: ${pack2_name} Active Protections

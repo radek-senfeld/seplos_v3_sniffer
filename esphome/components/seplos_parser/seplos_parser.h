@@ -3,6 +3,7 @@
 #include "esphome/core/component.h"
 #include "esphome/core/defines.h"
 #include "esphome/components/uart/uart.h"
+#include <string>
 #include <vector>
 
 #ifdef USE_SENSOR
@@ -22,9 +23,18 @@ class SeplosParser : public uart::UARTDevice, public Component {
 #ifdef USE_SENSOR
  protected:
   std::vector<sensor::Sensor *> sensors_;
+  struct SensorRegistration {
+    sensor::Sensor *sensor;
+    int bms_index;
+    std::string metric;
+  };
+  std::vector<SensorRegistration> sensor_registrations_;
 
  public:
-  void register_sensor(sensor::Sensor *obj) { this->sensors_.push_back(obj); }
+  void register_sensor(sensor::Sensor *obj, int bms_index, const std::string &metric) {
+    this->sensors_.push_back(obj);
+    this->sensor_registrations_.push_back({obj, bms_index, metric});
+  }
 #endif
 //#ifdef USE_BINARY_SENSOR
 // protected:
@@ -36,9 +46,18 @@ class SeplosParser : public uart::UARTDevice, public Component {
 #ifdef USE_TEXT_SENSOR
  protected:
   std::vector<text_sensor::TextSensor *> text_sensors_;
+  struct TextSensorRegistration {
+    text_sensor::TextSensor *sensor;
+    int bms_index;
+    std::string metric;
+  };
+  std::vector<TextSensorRegistration> text_sensor_registrations_;
 
  public:
-  void register_text_sensor(text_sensor::TextSensor *obj) { this->text_sensors_.push_back(obj); }
+  void register_text_sensor(text_sensor::TextSensor *obj, int bms_index, const std::string &metric) {
+    this->text_sensors_.push_back(obj);
+    this->text_sensor_registrations_.push_back({obj, bms_index, metric});
+  }
 #endif
 
   void set_bms_count(int bms_count);

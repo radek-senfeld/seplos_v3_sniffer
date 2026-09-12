@@ -125,33 +125,25 @@ void SeplosParser::setup() {
                          {"active_alarms", &active_alarms_},
                          {"active_protections", &active_protections_}};
 
-  // Zuordnung der Sensor-Objekte
-  for (auto &entry : sensor_map) {
-    const std::string &name = entry.first;
-    std::vector<sensor::Sensor *> *sensor_vector = entry.second;
-
-    for (int i = 0; i < bms_count_; i++) {
-      std::string expected_name = "bms" + std::to_string(i) + " " + name;
-      for (auto *sensor : this->sensors_) {
-        if (sensor->get_name() == expected_name) {
-          (*sensor_vector)[i] = sensor;
-        }
-      }
+  for (const auto &registration : sensor_registrations_) {
+    auto entry = sensor_map.find(registration.metric);
+    if (registration.bms_index < 0 || registration.bms_index >= bms_count_) {
+      ESP_LOGW(TAG, "Sensor has invalid BMS index: %d", registration.bms_index);
+    } else if (entry == sensor_map.end()) {
+      ESP_LOGW(TAG, "Unknown sensor metric: %s", registration.metric.c_str());
+    } else {
+      (*entry->second)[registration.bms_index] = registration.sensor;
     }
   }
 
-  // Zuordnung der Text-Sensor-Objekte
-  for (auto &entry : text_sensor_map) {
-    const std::string &name = entry.first;
-    std::vector<text_sensor::TextSensor *> *text_sensor_vector = entry.second;
-
-    for (int i = 0; i < bms_count_; i++) {
-      std::string expected_name = "bms" + std::to_string(i) + " " + name;
-      for (auto *sensor : this->text_sensors_) {
-        if (sensor->get_name() == expected_name) {
-          (*text_sensor_vector)[i] = sensor;
-        }
-      }
+  for (const auto &registration : text_sensor_registrations_) {
+    auto entry = text_sensor_map.find(registration.metric);
+    if (registration.bms_index < 0 || registration.bms_index >= bms_count_) {
+      ESP_LOGW(TAG, "Text sensor has invalid BMS index: %d", registration.bms_index);
+    } else if (entry == text_sensor_map.end()) {
+      ESP_LOGW(TAG, "Unknown text sensor metric: %s", registration.metric.c_str());
+    } else {
+      (*entry->second)[registration.bms_index] = registration.sensor;
     }
   }
 }
